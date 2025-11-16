@@ -1,24 +1,25 @@
 import { useAuth } from '../auth/AuthProvider'
+import { Container } from '../components/Container'
 
 export default function Me(){
   const { user, loading, signInWithGoogle, signOutUser } = useAuth()
 
   if (loading){
-    return <div>Loading...</div>
+    return <Container><div>Loading...</div></Container>
   }
 
   if (!user){
     return (
-      <div>
+      <Container>
         <h1>Welcome</h1>
         <p>Sign in to save dishes and follow creators.</p>
-        <button onClick={signInWithGoogle}>Sign in with Google</button>
-      </div>
+        {/* This button remains hidden because Google auth is disabled for now. */}
+      </Container>
     )
   }
 
   return (
-    <div>
+    <Container>
       <h1>Profile</h1>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         {user.photoURL ? <img src={user.photoURL} width={48} height={48} style={{ borderRadius: 24 }} /> : null}
@@ -30,7 +31,7 @@ export default function Me(){
       <div style={{ marginTop: 16 }}>
         <button onClick={signOutUser}>Sign out</button>
       </div>
-    </div>
+    </Container>
   )
 }
 

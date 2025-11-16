@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { auth } from '../lib/firebase'
-import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
-import { googleProvider } from '../lib/firebase'
+import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth'
 
 type AuthUser = {
   uid: string
@@ -13,7 +12,8 @@ type AuthUser = {
 type AuthContextValue = {
   user: AuthUser | null
   loading: boolean
-  signInWithGoogle: () => Promise<void>
+  signInWithEmail: (email: string, password: string) => Promise<void>
+  signUpWithEmail: (email: string, password: string) => Promise<void>
   signOutUser: () => Promise<void>
 }
 
@@ -40,8 +40,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }){
     return () => unsub()
   }, [])
 
-  const signInWithGoogle = async () => {
-    await signInWithPopup(auth, googleProvider)
+  const signInWithEmail = async (email: string, password: string) => {
+    await signInWithEmailAndPassword(auth, email, password)
+  }
+
+  const signUpWithEmail = async (email: string, password: string) => {
+    await createUserWithEmailAndPassword(auth, email, password)
   }
 
   const signOutUser = async () => {
@@ -51,7 +55,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }){
   const value = useMemo<AuthContextValue>(() => ({
     user,
     loading,
-    signInWithGoogle,
+    signInWithEmail,
+    signUpWithEmail,
     signOutUser,
   }), [user, loading])
 
