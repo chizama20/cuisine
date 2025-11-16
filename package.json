@@ -1,0 +1,16 @@
+{
+  "name": "cuisine-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm -w backend run dev & npm -w frontend run dev",
+    "build": "npm -w backend run build && npm -w frontend run build",
+    "lint": "npm -w backend run lint && npm -w frontend run lint",
+    "typecheck": "npm -w backend run typecheck && npm -w frontend run typecheck"
+  }
+}
+
